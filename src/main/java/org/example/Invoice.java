@@ -1,30 +1,30 @@
 package org.example;
 
 public class Invoice {
-    private String invoiceNumber;
-    private String locationName;
-    private String chargingPoint;
-    private String chargingMode;
+    private String invoiceId;
+    private String stationId;
+    private String type;
     private int duration;
-    private double chargedEnergy;
-    private double price;
+    private double energyConsumed;
+    private double totalCost;
+    private double tax;
 
-    public Invoice(String invoiceNumber, String locationName, String chargingPoint, String chargingMode, int duration, double chargedEnergy, double price) {
-        this.invoiceNumber = invoiceNumber;
-        this.locationName = locationName;
-        this.chargingPoint = chargingPoint;
-        this.chargingMode = chargingMode;
+    public Invoice(String invoiceId, String stationId, String type, int duration, double energyConsumed, double totalCost, double tax) {
+        this.invoiceId = invoiceId;
+        this.stationId = stationId;
+        this.type = type;
         this.duration = duration;
-        this.chargedEnergy = chargedEnergy;
-        this.price = price;
+        this.energyConsumed = energyConsumed;
+        this.totalCost = totalCost;
+        this.tax = tax;
     }
 
-    public void generateInvoice() {
-        // Logic to generate invoice
-    }
-
-    public void displayInvoice() {
-        // Logic to display invoice details
-    }
+    public String getInvoiceId() { return invoiceId; }
+    public String getStationId() { return stationId; }
+    public String getType() { return type; }
+    public int getDuration() { return duration; }
+    public double getEnergyConsumed() { return energyConsumed; }
+    public double getTotalCost() { return totalCost; }
+    public double getTax() { return tax; }
 }
 

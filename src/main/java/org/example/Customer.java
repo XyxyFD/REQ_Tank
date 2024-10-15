@@ -27,7 +27,7 @@ public class Customer extends Account {
     }
 
     @Override
-    public List<ChargingStation> viewAllLocations() {
+    public List<ChargingStation> viewAllStations() {
         List<ChargingStation> allStations = new ArrayList<>();
 
         for (Location location : App.getLocations()) {
@@ -50,26 +50,39 @@ public class Customer extends Account {
     }
 
     public void selectChargingStation(ChargingStation station) {
-        // Logik zur Auswahl einer Ladestation
+        if(station.getStatus().equals(StationStatus.available)){
+            station.setStatus(StationStatus.occupied);
+        }
     }
 
-    public void startCharging(ChargingStation station) {
-        station.startCharging();
+    public String getPayment() {
+        return payment;
     }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public List<String> getHistory() {
+        return history;
+    }
+
+
 
     public void stopCharging(ChargingStation station, int duration) {
         station.stopCharging();
         double cost = station.calculateCost(duration);
-
+        double chargedEnergy = 50.0; // Beispielwert oder Berechnung anpassen, falls nötig
+        double tax = 0.2 * cost;
         // Rechnung mit korrekt angeordneten Parametern basierend auf dem Konstruktor
         Invoice invoice = new Invoice(
-                "INV" + id,              // invoiceNumber
-                station.getId(),         // locationName
-                station.getId(),         // chargingPoint
-                station.getType().toString(), // chargingMode
-                duration,                // duration
-                50.0,                    // Beispielwert für chargedEnergy
-                cost                     // price
+                "INV" + id,
+                station.getId(),
+                station.getType().toString(),
+                duration,
+                chargedEnergy,
+                cost,
+                tax
         );
 
         invoices.add(invoice);
@@ -78,8 +91,10 @@ public class Customer extends Account {
                 .filter(account -> account instanceof Owner)
                 .findFirst().orElse(null);
         if (owner != null) {
-            owner.addInvoice(invoice);
+
         }
+        owner.addInvoice(invoice);
+        station.setStatus(StationStatus.available);
     }
 
     @Override

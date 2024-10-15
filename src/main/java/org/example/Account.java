@@ -16,7 +16,23 @@ public abstract class Account {
     }
 
     public abstract void topUp(double amount);
-    public abstract List<ChargingStation> viewAllLocations();
+    public abstract List<ChargingStation> viewAllStations();
     public abstract List<Invoice> viewInvoices();
     public abstract List<String> viewPriceOverview();
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

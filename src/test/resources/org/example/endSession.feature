@@ -1,16 +1,14 @@
-Feature: End Charging Session and View Billing
+Feature: End a charging session
+  As a customer
+  I want to end my charging session
+  So that the charging station becomes available again
 
-  Scenario: End the charging session
-    Given a charging session is in progress
-    When the customer selects the button "Stop charging"
-    Then the charging session ends at the selected station
-    And the availability status is updated to "available"
-    And a summary of the session, including duration and energy consumed, is displayed
+  Background:
+    Given the system has initialized locations and charging stations
 
-  Scenario Outline: View billing and update account balance
-    Given the charging session has ended
-    When the customer views the session summary
-    Then the total cost of the session is calculated based on the duration and energy consumed
-    And the customer’s account balance is updated to reflect the deducted amount
-    And a confirmation message showing the updated balance is displayed
-    Examples:
+
+  Scenario: Ending an occupied charging session
+    Given the charging station "CS1" is occupied at location "Main Station"
+    When the customer ends the session at the charging station "CS1"
+    Then verify the charging station's status as "available" for "Main Station"
+

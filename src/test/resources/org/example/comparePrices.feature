@@ -1,4 +1,6 @@
 Feature: View and Compare Charging Prices
+  Background:
+    Given the customer is logged into their account
 
   Scenario: Check price overview for different locations and charging types
     Given the customer is logged into their account

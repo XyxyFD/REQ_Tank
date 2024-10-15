@@ -11,7 +11,7 @@ public class App {
         initialize();
     }
 
-    private void initialize() {
+    void initialize() {
         // Initialisierung von Locations
         List<ChargingStation> location1Stations = new ArrayList<>();
         location1Stations.add(new ChargingStation("CS1", StationType.AC, StationStatus.available));
@@ -39,12 +39,10 @@ public class App {
         accounts.add(customer1);
         accounts.add(customer2);
 
-        // Erstellen von Rechnungen und Zuweisung an Owner und Customers
-        Invoice invoice1 = new Invoice("INV001", location1.getName(), location1Stations.get(0).getId(), "AC", 30, 20.0, 10.0);
-        Invoice invoice2 = new Invoice("INV002", location1.getName(), location1Stations.get(1).getId(), "DC", 45, 25.0, 15.0);
-        Invoice invoice3 = new Invoice("INV003", location2.getName(), location2Stations.get(0).getId(), "AC", 60, 30.0, 20.0);
+        Invoice invoice1 = new Invoice("INV001", "CS1", "AC", 30, 50.0, 20.0, 10.0);
+        Invoice invoice2 = new Invoice("INV002", "CS2", "DC", 45, 60.0, 25.0, 15.0);
+        Invoice invoice3 = new Invoice("INV003", "CS3", "AC", 60, 75.0, 30.0, 20.0);
 
-        // Zuweisung der Rechnungen
         customer1.viewInvoices().add(invoice1);
         customer1.viewInvoices().add(invoice2);
         customer2.viewInvoices().add(invoice3);
@@ -70,22 +68,19 @@ public class App {
         App app = new App();
 
         // Beispielverwendung:
-        app.register("customer@example.com", "123456789", "password", "credit card", true); // Customer registrieren
+        app.register("customer@example.com", "123456789", "password", "credit card"); // Customer registrieren
         app.login("customer@example.com", "password"); // Einloggen
     }
 
     // Registriere neuen Benutzer als Customer oder Owner
-    public void register(String email, String phone, String password, String paymentInfo, boolean isCustomer) {
-        if (isCustomer) {
-            Customer customer = new Customer("Customer Name", email, phone, password, accounts.size() + 1, paymentInfo, 0.0);
-            accounts.add(customer);
-            System.out.println("Customer erfolgreich registriert.");
-        } else {
-            Owner owner = new Owner("Owner Name", email, phone, password);
-            accounts.add(owner);
-            System.out.println("Owner erfolgreich registriert.");
-        }
+    public Customer register(String email, String phone, String password, String paymentInfo) {
+        // Erstellt und fügt einen neuen Kunden zur Accountliste hinzu
+        Customer customer = new Customer("Customer Name", email, phone, password, accounts.size() + 1, paymentInfo, 0.0);
+        accounts.add(customer);
+        System.out.println("Customer erfolgreich registriert.");
+        return customer;
     }
+
 
     // Login-Methode zur Authentifizierung von Nutzern
     public Account login(String usernameOrId, String password) {
@@ -98,4 +93,6 @@ public class App {
         System.out.println("Login fehlgeschlagen: Benutzername oder Passwort falsch.");
         return null;
     }
+
+
 }

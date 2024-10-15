@@ -19,7 +19,7 @@ public class Owner extends Account {
     }
 
     @Override
-    public List<ChargingStation> viewAllLocations() {
+    public List<ChargingStation> viewAllStations() {
         List<ChargingStation> allStations = new ArrayList<>();
         for (Location location : App.getLocations()) {
             allStations.addAll(location.getChargingStations());
@@ -36,14 +36,7 @@ public class Owner extends Account {
 
     @Override
     public List<Invoice> viewInvoices() {
-        //TODO GETTER einfügen damit das printen funktioniert
-        /*System.out.println("Invoice Number | Location | Charging Point | Mode | Duration | Energy | Price");
-        for (Invoice invoice : invoices) {
-            System.out.println(invoice.getInvoiceNumber() + " | " + invoice.getLocationName() + " | " + invoice.getChargingPoint() + " | " +
-                    invoice.getChargingMode() + " | " + invoice.getDuration() + " | " + invoice.getChargedEnergy() + " | " + invoice.getPrice());
-        }
 
-         */
         return invoices;
     }
 
@@ -64,8 +57,10 @@ public class Owner extends Account {
     }
 
 
-    public void setPrices(Location location, double acPrice, double dcPrice) {
+    public void setACPrice(Location location, double acPrice) {
         location.setAcPrice(acPrice);
+    }
+    public void setDCPrice(Location location, double dcPrice) {
         location.setDcPrice(dcPrice);
     }
 
@@ -75,5 +70,8 @@ public class Owner extends Account {
 
     public void addInvoice(Invoice invoice) {
         invoices.add(invoice);
+    }
+    public List<Location> viewAllLocations() {
+        return App.getLocations();
     }
 }

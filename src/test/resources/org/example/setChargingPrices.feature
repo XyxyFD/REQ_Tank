@@ -1,15 +1,17 @@
-Feature: Display charging point type
+Feature: Set Charging Prices
+  As an owner
+  I want to set the charging prices for AC and DC stations at each location
+  So that I can manage the costs for customers
 
   Background:
-    Given the owner has displayed the list of locations
-    And the owner has selected a charging point
+    Given the owner is logged into the Application
 
-  Scenario: Show AC type for a selected charging point
-    Given the selected charging point is of type AC
-    When the owner views the charging point details
-    Then the type "AC" should be displayed
+  Scenario: Set AC charging price for a location
+    Given the owner has selected the location "Main Station"
+    When the owner sets the AC charging price to 4.0
+    Then the AC charging price for "Main Station" should be 4.0
 
-  Scenario: Show DC type for a selected charging point
-    Given the selected charging point is of type DC
-    When the owner views the charging point details
-    Then the type "DC" should be displayed
+  Scenario: Set DC charging price for a location
+    Given the owner has selected the location "Central Park"
+    When the owner sets the DC charging price to 5.0
+    Then the DC charging price for "Central Park" should be 5.0

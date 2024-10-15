@@ -1,18 +1,34 @@
 package org.example;
 
-import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ViewHistoryStep {
-    @And("selects the option to {string}")
-    public void selectsTheOptionTo(String arg0) {
+    private App app;
+    private Customer customer;
+
+    @Given("the customer is logged in")
+    public void theCustomerIsLoggedIn() {
+        app = new App();
+        app.initialize();
+        customer = (Customer) app.login("customer1@example.com", "password");
+        assertTrue(customer != null, "Customer login failed.");
     }
 
-    @Then("a list of past charging sessions is displayed with details for each session, including date, location, charging type \\(AC or DC), duration, and cost")
-    public void aListOfPastChargingSessionsIsDisplayedWithDetailsForEachSessionIncludingDateLocationChargingTypeACOrDCDurationAndCost() {
+    @When("the customer accesses the charging history page")
+    public void theCustomerAccessesTheChargingHistoryPage() {
+        // Simulate customer accessing the charging history
+        assertFalse(customer.viewHistory().isEmpty(), "No history available.");
     }
 
-    @Then("a list of past account top-ups is displayed with details for each transaction, including date, top-up amount, and payment method")
-    public void aListOfPastAccountTopUpsIsDisplayedWithDetailsForEachTransactionIncludingDateTopUpAmountAndPaymentMethod() {
+    @Then("the customer's charging history should be displayed")
+    public void theCustomerChargingHistoryShouldBeDisplayed() {
+        // Check that the history is displayed correctly
+        for (String entry : customer.viewHistory()) {
+            System.out.println("History entry: " + entry);
+        }
     }
 }

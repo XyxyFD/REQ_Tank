@@ -16,6 +16,10 @@ public class ChargingStation {
         this.status = StationStatus.occupied;
     }
 
+    public void setStatus(StationStatus status) {
+        this.status = status;
+    }
+
     public void stopCharging() {
         // Logic to stop charging
         this.status = StationStatus.available;
@@ -40,6 +44,10 @@ public class ChargingStation {
 
     public StationStatus getStatus() {
         return status;
+    }
+
+    public void setType(StationType stationType) {
+        this.type = stationType;
     }
 }
 

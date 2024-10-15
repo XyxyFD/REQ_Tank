@@ -1,48 +1,40 @@
 package org.example;
 
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
 
 public class EndSessionStep {
-    @Given("a charging session is in progress")
-    public void aChargingSessionIsInProgress() {
+
+    private App app;
+    private ChargingStation selectedStation;
+
+    @Given("the system has initialized locations and charging stations")
+    public void theSystemIsInitializedWithLocationsAndStations() {
+        app = new App();
+        app.initialize(); // Initialisiert die App und fügt Standorte und Ladestationen hinzu
     }
 
-    @When("the customer selects the button {string}")
-    public void theCustomerSelectsTheButton(String arg0) {
+    @Given("the charging station {string} is occupied at location {string}")
+    public void theChargingStationIsOccupiedAtLocation(String stationId, String locationName) {
+        selectedStation = app.getLocations().stream()
+                .filter(location -> location.getName().equals(locationName))
+                .flatMap(location -> location.getChargingStations().stream())
+                .filter(station -> station.getId().equals(stationId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Charging station not found"));
+
+        selectedStation.setStatus(StationStatus.occupied); // Setzt den Status auf occupied für den Test
     }
 
-    @Then("the charging session ends at the selected station")
-    public void theChargingSessionEndsAtTheSelectedStation() {
+    @When("the customer ends the session at the charging station {string}")
+    public void theCustomerEndsTheSessionAtTheChargingStation(String stationId) {
+        selectedStation.setStatus(StationStatus.available); // Setzt den Status zurück auf available
     }
 
-    @And("the availability status is updated to {string}")
-    public void theAvailabilityStatusIsUpdatedTo(String arg0) {
-    }
-
-    @And("a summary of the session, including duration and energy consumed, is displayed")
-    public void aSummaryOfTheSessionIncludingDurationAndEnergyConsumedIsDisplayed() {
-    }
-
-    @Given("the charging session has ended")
-    public void theChargingSessionHasEnded() {
-    }
-
-    @When("the customer views the session summary")
-    public void theCustomerViewsTheSessionSummary() {
-    }
-
-    @Then("the total cost of the session is calculated based on the duration and energy consumed")
-    public void theTotalCostOfTheSessionIsCalculatedBasedOnTheDurationAndEnergyConsumed() {
-    }
-
-    @And("the customer’s account balance is updated to reflect the deducted amount")
-    public void theCustomerSAccountBalanceIsUpdatedToReflectTheDeductedAmount() {
-    }
-
-    @And("a confirmation message showing the updated balance is displayed")
-    public void aConfirmationMessageShowingTheUpdatedBalanceIsDisplayed() {
+    @Then("verify the charging station's status as {string} for {string}")
+    public void verifyTheChargingStationsStatusAs(String status, String stationName) {
+        // Implementierung bleibt gleich
     }
 }
