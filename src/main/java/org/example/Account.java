@@ -16,9 +16,7 @@ public abstract class Account {
     }
 
     public abstract void topUp(double amount);
-
-    public abstract List<Location> viewAllLocations();
-
+    public abstract List<ChargingStation> viewAllLocations();
     public abstract List<Invoice> viewInvoices();
+    public abstract List<String> viewPriceOverview();
 }
-

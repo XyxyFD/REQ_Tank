@@ -1,12 +1,13 @@
 package org.example;
 
 import java.util.List;
-import java.util.Map;
 
 public class Location {
     private String name;
     private String city;
     private List<ChargingStation> chargingStations;
+    private double acPrice;
+    private double dcPrice;
 
     public Location(String name, String city, List<ChargingStation> chargingStations) {
         this.name = name;
@@ -14,13 +15,30 @@ public class Location {
         this.chargingStations = chargingStations;
     }
 
-    public Map<String, Double> displayPrices() {
-        // Return prices for AC and DC charging at this location
-        return null;
+    public String getName() {
+        return name;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public List<ChargingStation> getChargingStations() {
         return chargingStations;
     }
-}
+    public double getAcPrice() {
+        return acPrice;
+    }
 
+    public void setAcPrice(double acPrice) {
+        this.acPrice = acPrice;
+    }
+
+    public double getDcPrice() {
+        return dcPrice;
+    }
+
+    public void setDcPrice(double dcPrice) {
+        this.dcPrice = dcPrice;
+    }
+}

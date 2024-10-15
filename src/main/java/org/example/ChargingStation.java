@@ -29,5 +29,17 @@ public class ChargingStation {
         // Logic to calculate cost based on duration and type
         return 0.0;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public StationType getType() {
+        return type;
+    }
+
+    public StationStatus getStatus() {
+        return status;
+    }
 }
 
