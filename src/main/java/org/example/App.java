@@ -7,6 +7,7 @@ public class App {
     private static List<Account> accounts = new ArrayList<>();
     private static List<Location> locations = new ArrayList<>();
 
+
     public App() {
         initialize();
     }
@@ -68,12 +69,29 @@ public class App {
         App app = new App();
 
         // Beispielverwendung:
-        app.register("customer@example.com", "123456789", "password", "credit card"); // Customer registrieren
-        app.login("customer@example.com", "password"); // Einloggen
+        try {
+            app.register("customer@example.com", "123456789", "password", "credit card"); // Customer registrieren
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            app.login("customer@example.com", "password"); // Einloggen
+        } catch (LoginException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Registriere neuen Benutzer als Customer oder Owner
-    public Customer register(String email, String phone, String password, String paymentInfo) {
+    public Customer register(String email, String phone, String password, String paymentInfo) throws RegistrationException {
+        // Überprüfung, ob die E-Mail bereits existiert
+        for (Account account : accounts) {
+            if (account.getEmail().equals(email)) {
+                throw new RegistrationException("Registration failed: Email already exists.");
+            }
+        }
+        if (password.length() < 8) {
+            throw new RegistrationException("Registration failed: Password must be at least 8 characters.");
+        }
         // Erstellt und fügt einen neuen Kunden zur Accountliste hinzu
         Customer customer = new Customer("Customer Name", email, phone, password, accounts.size() + 1, paymentInfo, 0.0);
         accounts.add(customer);
@@ -83,16 +101,14 @@ public class App {
 
 
     // Login-Methode zur Authentifizierung von Nutzern
-    public Account login(String usernameOrId, String password) {
+    public Account login(String usernameOrId, String password) throws LoginException {
         for (Account account : accounts) {
             if ((account.email.equals(usernameOrId) || account.phoneNumber.equals(usernameOrId)) && account.password.equals(password)) {
                 System.out.println("Login erfolgreich für: " + account.name);
                 return account;
             }
         }
-        System.out.println("Login fehlgeschlagen: Benutzername oder Passwort falsch.");
-        return null;
+        throw new LoginException();
     }
-
 
 }

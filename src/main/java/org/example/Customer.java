@@ -21,8 +21,11 @@ public class Customer extends Account {
         return id;
     }
 
-    @Override
-    public void topUp(double amount) {
+
+    public void topUp(double amount) throws TopUpException {
+        if (this.balance + amount > 5000) {
+            throw new TopUpException("Balance cannot exceed 5000 euros.");
+        }
         this.balance += amount;
     }
 
@@ -120,4 +123,13 @@ public class Customer extends Account {
     public List<String> viewHistory() {
         return history;
     }
+    public void startCharging(ChargingStation selectedStation) throws StartStationException {
+        if (selectedStation.getStatus() == StationStatus.occupied) {
+            throw new StartStationException("Charging station is currently occupied.");
+        } else if (selectedStation.getStatus() == StationStatus.outOfOrder) {
+            throw new StartStationException("Charging station is out of order.");
+        }
+       selectedStation.setStatus(StationStatus.occupied);
+    }
+
 }

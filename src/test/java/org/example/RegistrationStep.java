@@ -9,11 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegistrationStep {
     App app = new App();
+    Account account;
     String email;
     String phoneNumber;
     String password;
     String paymentInfo;
     Customer newCustomer;
+    private String registrationErrorMessage;
+    Exception registrationException;
 
     @Given("the customer is on the registration page")
     public void theCustomerIsOnTheRegistrationPage() {
@@ -42,7 +45,11 @@ public class RegistrationStep {
     @And("submits the registration form")
     public void submitsTheRegistrationForm() {
         // Sendet das Registrierungsformular ab und erstellt den Kunden in der App.
-        newCustomer = app.register(email, phoneNumber, password, paymentInfo);
+        try {
+            newCustomer = app.register(email, phoneNumber, password, paymentInfo);
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
         assertNotNull(newCustomer, "Customer registration failed. Customer should not be null.");
     }
 
@@ -60,5 +67,40 @@ public class RegistrationStep {
         assertEquals(phoneNumber, newCustomer.getPhoneNumber(), "Phone number should match.");
         assertEquals(paymentInfo, newCustomer.getPayment(), "Payment information should match.");
         System.out.println("Account created with correct details.");
+    }
+
+    @Given("the system is initialized")
+    public void theSystemIsInitialized() {
+    }
+
+    @When("the user registers with email {string}, phone {string}, password {string}, and payment info {string}")
+    public void theUserRegistersWithEmailPhonePasswordAndPaymentInfo(String email, String phone, String password, String paymentInfo) {
+
+        try {
+            newCustomer = app.register(email, phone, password, paymentInfo);
+        } catch (RegistrationException e) {
+            registrationErrorMessage = e.getMessage();
+        }
+    }
+
+    @Then("the error message {string} should be shown")
+    public void theErrorMessageShouldBeDisplayed(String expectedErrorMessage) {
+        assertEquals(expectedErrorMessage, registrationErrorMessage);
+    }
+
+    @When("the user tries to register with email {string} and password {string}")
+    public void theUserTriesToRegisterWithEmailAndPassword(String email, String password) {
+        app = new App();
+        try {
+            app.register(email, "123456789", password, "credit card");
+            registrationException = null;
+        } catch (RegistrationException e) {
+            registrationException = e;
+        }
+    }
+    @Then("an error message {string} should be displayed")
+    public void anErrorMessageShouldBeDisplayed(String expectedMessage) {
+        assertNotNull(registrationException);
+        assertEquals(expectedMessage, registrationException.getMessage());
     }
 }

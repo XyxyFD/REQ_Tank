@@ -15,7 +15,7 @@ public abstract class Account {
         this.password = password;
     }
 
-    public abstract void topUp(double amount);
+
     public abstract List<ChargingStation> viewAllStations();
     public abstract List<Invoice> viewInvoices();
     public abstract List<String> viewPriceOverview();

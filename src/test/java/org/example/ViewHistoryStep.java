@@ -14,7 +14,11 @@ public class ViewHistoryStep {
     public void theCustomerIsLoggedIn() {
         app = new App();
         app.initialize();
-        customer = (Customer) app.login("customer1@example.com", "password");
+        try {
+            customer = (Customer) app.login("customer1@example.com", "password");
+        } catch (LoginException e) {
+            throw new RuntimeException(e);
+        }
         assertTrue(customer != null, "Customer login failed.");
     }
 

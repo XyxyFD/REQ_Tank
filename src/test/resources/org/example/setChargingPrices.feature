@@ -15,3 +15,14 @@ Feature: Set Charging Prices
     Given the owner has selected the location "Central Park"
     When the owner sets the DC charging price to 5.0
     Then the DC charging price for "Central Park" should be 5.0
+
+     # ErrorCases
+  Scenario: Set charging prices with negative or excessive values
+    Given the average AC price is 2.5
+    When the owner tries to set the AC price to -2.0 euros
+    Then an error message "Charging price cannot be negative" should be thrown
+
+  Scenario: Set charging prices with negative or excessive values
+    Given the average DC price is 2.5
+    When the DC price is set to 1000 euros
+    Then the error message "Charging price cannot be more than 1000% over the average." should be thrown

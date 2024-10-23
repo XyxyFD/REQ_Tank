@@ -13,10 +13,7 @@ public class Owner extends Account {
         super(name, email, phoneNumber, password);
     }
 
-    @Override
-    public void topUp(double amount) {
-        // Logik spezifisch für den Owner
-    }
+
 
     @Override
     public List<ChargingStation> viewAllStations() {
@@ -57,15 +54,34 @@ public class Owner extends Account {
     }
 
 
-    public void setACPrice(Location location, double acPrice) {
+    public void setACPrice(Location location, double acPrice) throws SetChargingPricesException {
+        validatePrice(acPrice);
         location.setAcPrice(acPrice);
     }
-    public void setDCPrice(Location location, double dcPrice) {
+    public void setDCPrice(Location location, double dcPrice) throws SetChargingPricesException {
+        validatePrice(dcPrice);
         location.setDcPrice(dcPrice);
+    }
+    private void validatePrice(double price) throws SetChargingPricesException {
+        if (price < 0) {
+            throw new SetChargingPricesException("Charging price cannot be negative");
+        }
+        // Simpler Dummy-Wert für Durchschnittspreis-Validierung, kann angepasst werden
+        double averagePrice = 2.5;
+        if (price > 10 * averagePrice) {
+            throw new SetChargingPricesException("Charging price cannot be more than 1000% over the average.");
+        }
     }
 
     public Map<String, Double> getPrices(String location) {
         return locationPrices.getOrDefault(location, new HashMap<>());
+    }
+
+    public double getAverageACPrice(){
+        return 2.5;
+    }
+    public double getAverageDCPrice(){
+        return 2.5;
     }
 
     public void addInvoice(Invoice invoice) {
@@ -74,4 +90,5 @@ public class Owner extends Account {
     public List<Location> viewAllLocations() {
         return App.getLocations();
     }
+
 }

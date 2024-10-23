@@ -18,7 +18,11 @@ public class ComparePricesStep {
     @Given("the customer is logged into their account")
     public void theCustomerIsLoggedIntoTheirAccount() {
         // Log in and initialize the customer
-        customer = (Customer) app.login("customer1@example.com", "password");
+        try {
+            customer = (Customer) app.login("customer1@example.com", "password");
+        } catch (LoginException e) {
+            throw new RuntimeException(e);
+        }
         assertNotNull(customer, "Customer should be logged in successfully");
     }
 

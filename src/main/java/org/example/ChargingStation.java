@@ -11,10 +11,7 @@ public class ChargingStation {
         this.status = status;
     }
 
-    public void startCharging() {
-        // Logic to start charging
-        this.status = StationStatus.occupied;
-    }
+
 
     public void setStatus(StationStatus status) {
         this.status = status;
