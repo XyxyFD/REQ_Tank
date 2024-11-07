@@ -12,3 +12,9 @@ Feature: View and Compare Charging Prices
     When the customer selects two or more locations to compare
     Then the prices for AC and DC charging are shown side by side for the selected locations
     And the customer can see the price differences between locations and charging types
+
+    #ErrorCase
+
+  Scenario: Compare prices between locations for AC and DC charging
+    When the customer does not select a station and compares prices
+    Then the Error message "You have not selected a station" should be presented

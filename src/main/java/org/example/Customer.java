@@ -1,5 +1,7 @@
 package org.example;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +10,20 @@ public class Customer extends Account {
     private String payment;
     private double balance;
     private List<Invoice> invoices = new ArrayList<>();
+    private List<Location> compareLocations = new ArrayList<>();
     private List<String> history = new ArrayList<>();
 
-    public Customer(String name, String email, String phoneNumber, String password, int id, String payment, double balance) {
+    public Customer(String name, String email, String phoneNumber, String password, int id, double balance) {
         super(name, email, phoneNumber, password);
         this.id = id;
-        this.payment = payment;
         this.balance = balance;
+        this.payment = "NO_PAYMENT_INFO";
+    }
+    public Customer(String name, String email, String phoneNumber, String password, int id, double balance, String payment) {
+        super(name, email, phoneNumber, password);
+        this.id = id;
+        this.balance = balance;
+        this.payment = payment;
     }
 
     public int getId() {
@@ -23,8 +32,14 @@ public class Customer extends Account {
 
 
     public void topUp(double amount) throws TopUpException {
+        if ("NO_PAYMENT_INFO".equals(this.getPayment())) {
+            throw new TopUpException("Cannot top up: No payment information provided.");
+        }
         if (this.balance + amount > 5000) {
             throw new TopUpException("Balance cannot exceed 5000 euros.");
+        }
+        if(amount < 10){
+            throw new TopUpException("You have to top-up at least 10 Euros");
         }
         this.balance += amount;
     }
@@ -46,6 +61,9 @@ public class Customer extends Account {
         return allStations;
     }
 
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
 
     @Override
     public List<Invoice> viewInvoices() {
@@ -120,7 +138,12 @@ public class Customer extends Account {
     public double getBalance() {
         return balance;
     }
-    public List<String> viewHistory() {
+
+
+    public List<String> viewHistory() throws Exception {
+        if(history.isEmpty()){
+            throw new Exception("You do not have a history yet");
+        }
         return history;
     }
     public void startCharging(ChargingStation selectedStation) throws StartStationException {
@@ -131,5 +154,26 @@ public class Customer extends Account {
         }
        selectedStation.setStatus(StationStatus.occupied);
     }
+    public void addLocationToCompare(Location location){
+        compareLocations.add(location);
+    }
+    public void comparePrices() throws Exception{
+        if(compareLocations.isEmpty()){
+            throw new Exception("You have not selected a station");
+        }
+        for (Location loc:
+                compareLocations) {
+            System.out.println("Name: " + loc.getName());
+            System.out.println("DC Price : " + loc.getDcPrice());
+            System.out.println("AC Price : " + loc.getAcPrice());
+            System.out.println("...........................................................");
+        }
+    }
+    public void addHistory(String history){
+        this.history.add(history);
+    }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

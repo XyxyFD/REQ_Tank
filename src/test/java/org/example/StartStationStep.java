@@ -11,13 +11,14 @@ public class StartStationStep {
 
     private App app = new App();
     private ChargingStation selectedStation;
-    Customer customer = (Customer) App.getAccounts().get(1);
+    Customer customer ; //(Customer) App.getAccounts().get(1);
     private ChargingStation occupiedStation = new ChargingStation("CS2", StationType.DC, StationStatus.occupied);
     private ChargingStation outOfOrderStation = new ChargingStation("CS4", StationType.DC, StationStatus.outOfOrder);
     private Exception exception;
 
     @Given("the system is initialized with locations and stations")
     public void theSystemIsInitializedWithLocationsAndStations() {
+        customer = (Customer) App.getAccounts().get(1);
 
     }
 

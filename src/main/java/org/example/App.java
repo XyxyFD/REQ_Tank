@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class App {
-    private static List<Account> accounts = new ArrayList<>();
-    private static List<Location> locations = new ArrayList<>();
+    public static List<Account> accounts = new ArrayList<>();
+    public static List<Location> locations = new ArrayList<>();
 
 
     public App() {
@@ -35,10 +35,12 @@ public class App {
         Owner owner = new Owner("Owner Name", "owner@example.com", "111111111", "password");
         accounts.add(owner);
 
-        Customer customer1 = new Customer("Customer1", "customer1@example.com", "222222222", "password", 1, "credit card", 0.0);
-        Customer customer2 = new Customer("Customer2", "customer2@example.com", "333333333", "password", 2, "debit card", 0.0);
+        Customer customer1 = new Customer("Customer1", "customer1@example.com", "222222222", "password", 1,  0.0);
+        Customer customer2 = new Customer("Customer2", "customer2@example.com", "333333333", "password", 2,  0.0);
+        Customer customer3 = new Customer("Customer3", "customer3@example.com", "444444444", "password", 3,  0.0);
         accounts.add(customer1);
         accounts.add(customer2);
+        accounts.add(customer3);
 
         Invoice invoice1 = new Invoice("INV001", "CS1", "AC", 30, 50.0, 20.0, 10.0);
         Invoice invoice2 = new Invoice("INV002", "CS2", "DC", 45, 60.0, 25.0, 15.0);
@@ -51,11 +53,11 @@ public class App {
         owner.addInvoice(invoice1);
         owner.addInvoice(invoice2);
         owner.addInvoice(invoice3);
-        customer1.viewHistory().add("Duration: 20 min, Cost: 5.0€");
-        customer1.viewHistory().add("Duration: 30 min, Cost: 7.5€");
+        customer1.addHistory("Duration: 20 min, Cost: 5.0€");
+        customer1.addHistory("Duration: 30 min, Cost: 7.5€");
 
-        customer2.viewHistory().add("Duration: 25 min, Cost: 6.0€");
-        customer2.viewHistory().add("Duration: 35 min, Cost: 8.0€");
+        customer2.addHistory("Duration: 25 min, Cost: 6.0€");
+        customer2.addHistory("Duration: 35 min, Cost: 8.0€");
     }
 
     public static List<Location> getLocations() {
@@ -93,7 +95,7 @@ public class App {
             throw new RegistrationException("Registration failed: Password must be at least 8 characters.");
         }
         // Erstellt und fügt einen neuen Kunden zur Accountliste hinzu
-        Customer customer = new Customer("Customer Name", email, phone, password, accounts.size() + 1, paymentInfo, 0.0);
+        Customer customer = new Customer("Customer Name", email, phone, password, accounts.size() + 1,  0.0, paymentInfo);
         accounts.add(customer);
         System.out.println("Customer erfolgreich registriert.");
         return customer;

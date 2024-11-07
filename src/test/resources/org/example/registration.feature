@@ -16,6 +16,7 @@ Feature: Customer Registration
     When the user registers with email "customer1@example.com", phone "123456789", password "password", and payment info "credit card"
     Then the error message "Registration failed: Email already exists." should be shown
 
+    #EdgeCase
   Scenario: Register with a password shorter than 8 characters
     When the user tries to register with email "newuser@example.com" and password "short"
     Then an error message "Registration failed: Password must be at least 8 characters." should be displayed

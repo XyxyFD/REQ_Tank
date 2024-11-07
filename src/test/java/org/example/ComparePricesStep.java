@@ -7,13 +7,12 @@ import io.cucumber.java.en.When;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ComparePricesStep {
     App app = new App();
     Customer customer;
+    Exception compareError;
 
     @Given("the customer is logged into their account")
     public void theCustomerIsLoggedIntoTheirAccount() {
@@ -73,5 +72,19 @@ public class ComparePricesStep {
         List<String> priceOverview = customer.viewPriceOverview();
         assertTrue(priceOverview.stream().anyMatch(entry -> entry.contains("AC") && entry.contains("DC")),
                 "Price differences should be visible for AC and DC between locations");
+    }
+
+    @When("the customer does not select a station and compares prices")
+    public void theCustomerAddsTheLocation() {
+        try {
+            customer.comparePrices();
+        } catch (Exception e) {
+            compareError = e;
+        }
+    }
+
+    @Then("the Error message {string} should be presented")
+    public void theErrorMessageShouldBePresented(String errormessage) {
+        assertEquals(compareError.getMessage(), errormessage);
     }
 }
